@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Endangered Languages Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    #map { height: 100vh; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const languages = [
+      {
+        name: "Ainu",
+        country: "Japan (Hokkaido)",
+        lat: 43.0642,
+        lng: 141.3468,
+        status: "Critically Endangered",
+        speakers: "~10",
+        description: "An indigenous language of the Ainu people in northern Japan. Very few fluent speakers remain."
+      },
+      {
+        name: "Manchu",
+        country: "China (Northeast)",
+        lat: 41.7922,
+        lng: 123.4328,
+        status: "Severely Endangered",
+        speakers: "~20",
+        description: "Once the official language of the Qing dynasty, now almost extinct with few elderly speakers."
+      },
+      {
+        name: "Irish Gaelic",
+        country: "Ireland",
+        lat: 53.3498,
+        lng: -6.2603,
+        status: "Vulnerable",
+        speakers: "~73,000 daily speakers",
+        description: "A Celtic language still spoken in Gaeltacht regions and taught in schools."
+      },
+      {
+        name: "Yuchi",
+        country: "USA (Oklahoma)",
+        lat: 35.9606,
+        lng: -95.7806,
+        status: "Critically Endangered",
+        speakers: "< 5",
+        description: "A Native American language isolate with very few remaining speakers."
+      },
+      {
+        name: "Oroqen",
+        country: "China (Inner Mongolia)",
+        lat: 49.2,
+        lng: 123.7,
+        status: "Severely Endangered",
+        speakers: "~50",
+        description: "Spoken by the Oroqen people. Mostly elderly speakers remain."
+      }
+    ];
+
+    function getColor(status) {
+      switch (status) {
+        case "Vulnerable": return "blue";
+        case "Severely Endangered": return "orange";
+        case "Critically Endangered": return "red";
+        default: return "gray";
+      }
+    }
+
+    languages.forEach(lang => {
+      const marker = L.circleMarker([lang.lat, lang.lng], {
+        radius: 8,
+        color: getColor(lang.status),
+        fillColor: getColor(lang.status),
+        fillOpacity: 0.9
+      }).addTo(map);
+
+      marker.bindPopup(`
+        <strong>${lang.name}</strong><br>
+        📍 <strong>${lang.country}</strong><br>
+        🧠 <strong>Status:</strong> ${lang.status}<br>
+        👥 <strong>Speakers:</strong> ${lang.speakers}<br>
+        📝 ${lang.description}
+      `);
+    });
+  </script>
+</body>
+</html>
