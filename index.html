@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Endangered Languages Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; width: 100%; }
+    body { margin: 0; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([10, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const languageData = [
+      {
+        name: "Ainu",
+        status: "Critically Endangered",
+        lat: 43.0642,
+        lng: 141.3468
+      },
+      {
+        name: "Manchu",
+        status: "Severely Endangered",
+        lat: 41.7922,
+        lng: 123.4328
+      },
+      {
+        name: "Irish Gaelic",
+        status: "Vulnerable",
+        lat: 53.3498,
+        lng: -6.2603
+      },
+      {
+        name: "Yuchi",
+        status: "Critically Endangered",
+        lat: 35.9606,
+        lng: -95.7806
+      }
+    ];
+
+    function getColor(status) {
+      switch (status) {
+        case "Vulnerable": return "blue";
+        case "Severely Endangered": return "orange";
+        case "Critically Endangered": return "red";
+        default: return "gray";
+      }
+    }
+
+    languageData.forEach(lang => {
+      const marker = L.circleMarker([lang.lat, lang.lng], {
+        radius: 8,
+        color: getColor(lang.status),
+        fillColor: getColor(lang.status),
+        fillOpacity: 0.8
+      }).addTo(map);
+
+      marker.bindPopup(`<strong>${lang.name}</strong><br>Status: ${lang.status}`);
+    });
+  </script>
+</body>
+</html>
